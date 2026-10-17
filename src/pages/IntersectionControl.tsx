@@ -12,7 +12,7 @@ export const IntersectionControl: React.FC = () => {
   } = useTraffic();
 
   return (
-    <div className="flex-1 flex flex-col p-5 gap-4 overflow-y-auto">
+    <div className="flex-1 flex flex-col p-5 gap-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>

@@ -37,9 +37,9 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside
-      className={`bg-bg-sidebar border-r border-border flex flex-col justify-between shrink-0 transition-all duration-300 select-none z-30 ${
+      className={`bg-bg-sidebar border-r border-border flex min-h-0 flex-col justify-between shrink-0 overflow-y-auto overscroll-y-contain transition-all duration-300 select-none z-30 ${
         sidebarCollapsed ? 'w-16' : 'w-64'
-      } h-screen sticky top-0`}
+      } h-full`}
     >
       {/* Top Branding & Navigation */}
       <div className="flex flex-col">

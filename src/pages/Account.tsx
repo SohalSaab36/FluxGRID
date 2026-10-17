@@ -82,7 +82,7 @@ export const Account: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-5">
+    <div className="flex-1 p-5">
       <section className="mx-auto max-w-xl rounded-xl border border-border bg-bg-panel p-6">
         <div className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-cyan/30 bg-cyan/10 text-cyan">

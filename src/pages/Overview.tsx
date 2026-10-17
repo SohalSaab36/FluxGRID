@@ -50,7 +50,7 @@ export const Overview: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-5 gap-4 overflow-y-auto">
+    <div className="flex-1 flex flex-col p-5 gap-4">
       {/* Page Heading & Header Actions */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>

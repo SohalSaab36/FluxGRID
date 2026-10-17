@@ -7,7 +7,7 @@ export const Settings: React.FC = () => {
   const { settings, updateSettings } = useTraffic();
 
   return (
-    <div className="flex-1 flex flex-col p-5 gap-4 overflow-y-auto max-w-4xl">
+    <div className="flex-1 flex flex-col p-5 gap-4 max-w-4xl">
       {/* Header */}
       <div>
         <h1 className="text-xl font-bold text-text-primary tracking-tight">

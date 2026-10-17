@@ -105,7 +105,7 @@ export const VehicleDetection: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-5 gap-4 overflow-y-auto">
+    <div className="flex-1 flex flex-col p-5 gap-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -120,17 +120,21 @@ export const VehicleDetection: React.FC = () => {
         {/* Camera Selector Dropdown */}
         <div className="flex items-center gap-2">
           <Camera className="w-4 h-4 text-cyan" />
-          <select
-            value={selectedIntersection.id}
-            onChange={(e) => selectIntersection(e.target.value)}
-            className="bg-[#142233] border border-border text-xs rounded-lg px-3 py-1.5 text-text-primary focus:outline-none focus:border-cyan"
-          >
-            {intersections.map((int) => (
-              <option key={int.id} value={int.id}>
-                {int.cameraId} · {int.name}
-              </option>
-            ))}
-          </select>
+          <label className="flex items-center gap-2">
+            <Camera aria-hidden="true" className="w-4 h-4 text-cyan" />
+            <span className="sr-only">Select camera intersection</span>
+            <select
+              value={selectedIntersection.id}
+              onChange={(e) => selectIntersection(e.target.value)}
+              className="bg-[#142233] border border-border text-xs rounded-lg px-3 py-1.5 text-text-primary focus:border-cyan"
+            >
+              {intersections.map((int) => (
+                <option key={int.id} value={int.id}>
+                  {int.cameraId} · {int.name}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </div>
 
@@ -139,7 +143,10 @@ export const VehicleDetection: React.FC = () => {
         {/* Large Video / Canvas Frame (8 cols) */}
         <div className="lg:col-span-8 flex flex-col gap-3">
           <div className="bg-bg-panel border border-border rounded-xl p-4 flex flex-col gap-3">
-            <div className="relative w-full h-[380px] rounded-lg overflow-hidden border border-border bg-[#0B1422]">
+            <div className="relative w-full h-[380px] rounded-lg overflow-hidden border border-border bg-[#0B1422]" aria-describedby="ai-feed-description">
+              <span id="ai-feed-description" className="sr-only">
+                Simulated AI traffic-camera preview. Detected vehicle counts and mean confidence are listed alongside the feed.
+              </span>
               {userVideoUrl && (
                 <video
                   src={userVideoUrl}
@@ -147,6 +154,7 @@ export const VehicleDetection: React.FC = () => {
                   loop
                   muted
                   playsInline
+                  aria-label="Uploaded traffic video"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               )}
@@ -155,6 +163,7 @@ export const VehicleDetection: React.FC = () => {
                 ref={canvasRef}
                 width={640}
                 height={380}
+                aria-hidden="true"
                 className="w-full h-full object-cover relative z-10"
               />
 
@@ -167,6 +176,9 @@ export const VehicleDetection: React.FC = () => {
               <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5">
                 <button
                   onClick={() => setShowBoxes(!showBoxes)}
+                  type="button"
+                  aria-label={showBoxes ? 'Hide AI detection overlays' : 'Show AI detection overlays'}
+                  aria-pressed={showBoxes}
                   className={`p-1.5 rounded bg-[#0A1320]/80 border text-xs backdrop-blur-md transition-colors ${
                     showBoxes ? 'border-cyan/40 text-cyan' : 'border-border text-text-muted'
                   }`}
@@ -176,18 +188,22 @@ export const VehicleDetection: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
+                  type="button"
+                  aria-label={isPlaying ? 'Pause AI detection feed' : 'Resume AI detection feed'}
                   className="p-1.5 rounded bg-[#0A1320]/80 border border-border text-text-secondary hover:text-text-primary backdrop-blur-md transition-colors"
                 >
                   {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                 </button>
                 <button
                   onClick={() => fileInputRef.current?.click()}
+                  type="button"
+                  aria-label="Upload traffic video for AI analysis"
                   className="p-1.5 rounded bg-[#0A1320]/80 border border-border text-text-secondary hover:text-cyan backdrop-blur-md transition-colors"
                   title="Upload Video File"
                 >
                   <Upload className="w-3.5 h-3.5" />
                 </button>
-                <input ref={fileInputRef} type="file" accept="video/*" className="hidden" onChange={handleFileUpload} />
+                <input ref={fileInputRef} type="file" accept="video/*" className="hidden" aria-label="Select traffic video for AI analysis" onChange={handleFileUpload} />
               </div>
 
               <div className="absolute bottom-3 left-3 z-20 px-2 py-0.5 rounded bg-[#0A1320]/80 border border-border text-[10px] font-mono text-text-muted backdrop-blur-md">
@@ -200,20 +216,23 @@ export const VehicleDetection: React.FC = () => {
             </div>
 
             {/* Threshold Slider */}
-            <div className="flex items-center justify-between text-xs pt-1">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-xs pt-1">
               <div className="flex items-center gap-3">
-                <span className="text-text-muted">Confidence Filter:</span>
+                <label htmlFor="detection-confidence" className="text-text-muted">Confidence Filter:</label>
                 <input
+                  id="detection-confidence"
                   type="range"
                   min="50"
                   max="99"
                   value={confidenceThreshold}
                   onChange={(e) => setConfidenceThreshold(Number(e.target.value))}
+                  aria-describedby="confidence-help"
+                  aria-valuetext={`${confidenceThreshold} percent`}
                   className="w-36 accent-cyan"
                 />
-                <span className="font-mono text-cyan font-bold">{confidenceThreshold}%</span>
+                <output htmlFor="detection-confidence" className="font-mono text-cyan font-bold">{confidenceThreshold}%</output>
               </div>
-              <span className="text-[11px] text-text-muted">
+              <span id="confidence-help" className="text-[11px] text-text-muted">
                 Detections with score below threshold are suppressed.
               </span>
             </div>
@@ -227,47 +246,47 @@ export const VehicleDetection: React.FC = () => {
               Vehicle Counts on Approach
             </h3>
 
-            <div className="space-y-2">
+            <dl className="space-y-2" aria-label="AI detected vehicle counts">
               <div className="p-2.5 rounded-lg bg-[#0E1726] border border-border flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Car className="w-4 h-4 text-cyan" />
-                  <span className="text-xs font-medium text-text-primary">Passenger Cars</span>
+                  <Car aria-hidden="true" className="w-4 h-4 text-cyan" />
+                  <dt className="text-xs font-medium text-text-primary">Passenger Cars</dt>
                 </div>
-                <span className="font-mono font-bold text-sm text-text-primary">{detection.cars}</span>
+                <dd className="font-mono font-bold text-sm text-text-primary">{detection.cars}</dd>
               </div>
 
               <div className="p-2.5 rounded-lg bg-[#0E1726] border border-border flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Bike className="w-4 h-4 text-success" />
-                  <span className="text-xs font-medium text-text-primary">Motorcycles & Bikes</span>
+                  <Bike aria-hidden="true" className="w-4 h-4 text-success" />
+                  <dt className="text-xs font-medium text-text-primary">Motorcycles & Bikes</dt>
                 </div>
-                <span className="font-mono font-bold text-sm text-text-primary">{detection.bikes}</span>
+                <dd className="font-mono font-bold text-sm text-text-primary">{detection.bikes}</dd>
               </div>
 
               <div className="p-2.5 rounded-lg bg-[#0E1726] border border-border flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Bus className="w-4 h-4 text-warning" />
-                  <span className="text-xs font-medium text-text-primary">Transit Buses</span>
+                  <Bus aria-hidden="true" className="w-4 h-4 text-warning" />
+                  <dt className="text-xs font-medium text-text-primary">Transit Buses</dt>
                 </div>
-                <span className="font-mono font-bold text-sm text-text-primary">{detection.buses}</span>
+                <dd className="font-mono font-bold text-sm text-text-primary">{detection.buses}</dd>
               </div>
 
               <div className="p-2.5 rounded-lg bg-[#0E1726] border border-border flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Truck className="w-4 h-4 text-warning" />
-                  <span className="text-xs font-medium text-text-primary">Commercial Trucks</span>
+                  <Truck aria-hidden="true" className="w-4 h-4 text-warning" />
+                  <dt className="text-xs font-medium text-text-primary">Commercial Trucks</dt>
                 </div>
-                <span className="font-mono font-bold text-sm text-text-primary">{detection.trucks}</span>
+                <dd className="font-mono font-bold text-sm text-text-primary">{detection.trucks}</dd>
               </div>
 
               <div className="p-2.5 rounded-lg bg-[#0E1726] border border-border flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Users className="w-4 h-4 text-danger" />
-                  <span className="text-xs font-medium text-text-primary">Crosswalk Pedestrians</span>
+                  <Users aria-hidden="true" className="w-4 h-4 text-danger" />
+                  <dt className="text-xs font-medium text-text-primary">Crosswalk Pedestrians</dt>
                 </div>
-                <span className="font-mono font-bold text-sm text-text-primary">{detection.pedestrians}</span>
+                <dd className="font-mono font-bold text-sm text-text-primary">{detection.pedestrians}</dd>
               </div>
-            </div>
+            </dl>
 
             {/* Overall Confidence Callout */}
             <div className="mt-2 p-3 rounded-lg bg-[#0E1726] border border-border text-xs">
@@ -279,6 +298,11 @@ export const VehicleDetection: React.FC = () => {
                 <div
                   className="bg-cyan h-1.5 rounded-full transition-all duration-300"
                   style={{ width: `${detection.confidence}%` }}
+                  role="progressbar"
+                  aria-label="Mean tracking confidence"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.round(detection.confidence)}
                 />
               </div>
             </div>

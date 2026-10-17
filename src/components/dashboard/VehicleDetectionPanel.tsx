@@ -163,9 +163,12 @@ export const VehicleDetectionPanel: React.FC = () => {
   }, [userVideoUrl, isPlaying, showBoundingBoxes]);
 
   return (
-    <div className="bg-bg-panel border border-border rounded-xl p-4 flex flex-col justify-between select-none">
+    <section aria-labelledby="overview-ai-detection-title" className="bg-bg-panel border border-border rounded-xl p-4 flex flex-col justify-between">
       {/* Video Viewport Frame */}
-      <div className="relative w-full h-[210px] rounded-lg overflow-hidden border border-border bg-[#0B1422] flex items-center justify-center">
+      <div className="relative w-full h-[210px] rounded-lg overflow-hidden border border-border bg-[#0B1422] flex items-center justify-center" aria-describedby="overview-ai-feed-description">
+        <span id="overview-ai-feed-description" className="sr-only">
+          Simulated AI traffic-camera preview with vehicle detections. Detection counts are listed below.
+        </span>
         {/* User uploaded HTML5 Video */}
         {userVideoUrl && (
           <video
@@ -175,6 +178,7 @@ export const VehicleDetectionPanel: React.FC = () => {
             loop
             muted
             playsInline
+            aria-label="Uploaded traffic video"
             className="absolute inset-0 w-full h-full object-cover"
           />
         )}
@@ -184,6 +188,7 @@ export const VehicleDetectionPanel: React.FC = () => {
           ref={canvasRef}
           width={380}
           height={210}
+          aria-hidden="true"
           className="w-full h-full object-cover relative z-10"
         />
 
@@ -197,6 +202,9 @@ export const VehicleDetectionPanel: React.FC = () => {
         <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-1">
           <button
             onClick={() => setShowBoundingBoxes(!showBoundingBoxes)}
+            type="button"
+            aria-label={showBoundingBoxes ? 'Hide AI detection overlays' : 'Show AI detection overlays'}
+            aria-pressed={showBoundingBoxes}
             className={`p-1 rounded bg-[#0A1320]/80 border text-[10px] backdrop-blur-md transition-colors ${
               showBoundingBoxes ? 'border-cyan/40 text-cyan' : 'border-border text-text-muted'
             }`}
@@ -206,6 +214,8 @@ export const VehicleDetectionPanel: React.FC = () => {
           </button>
           <button
             onClick={() => setIsPlaying(!isPlaying)}
+            type="button"
+            aria-label={isPlaying ? 'Pause AI detection feed' : 'Resume AI detection feed'}
             className="p-1 rounded bg-[#0A1320]/80 border border-border text-text-secondary hover:text-text-primary backdrop-blur-md transition-colors"
             title={isPlaying ? 'Pause Feed' : 'Resume Feed'}
           >
@@ -213,6 +223,8 @@ export const VehicleDetectionPanel: React.FC = () => {
           </button>
           <button
             onClick={() => fileInputRef.current?.click()}
+            type="button"
+            aria-label="Upload traffic video for AI analysis"
             className="p-1 rounded bg-[#0A1320]/80 border border-border text-text-secondary hover:text-cyan backdrop-blur-md transition-colors"
             title="Upload local traffic video"
           >
@@ -223,6 +235,7 @@ export const VehicleDetectionPanel: React.FC = () => {
             type="file"
             accept="video/*"
             className="hidden"
+            aria-label="Select traffic video for AI analysis"
             onChange={handleFileChange}
           />
         </div>
@@ -240,22 +253,22 @@ export const VehicleDetectionPanel: React.FC = () => {
 
       {/* Under Video: Header with Confidence */}
       <div className="pt-3 flex items-center justify-between border-t border-border/50 mt-3">
-        <span className="text-xs font-semibold text-text-primary">
+        <h2 id="overview-ai-detection-title" className="text-xs font-semibold text-text-primary">
           AI Vehicle Detection
-        </span>
-        <span className="text-xs font-semibold font-mono text-cyan">
+        </h2>
+        <span className="text-xs font-semibold font-mono text-cyan" aria-label={`Detection confidence ${detection.confidence.toFixed(1)} percent`}>
           {detection.confidence.toFixed(1)}% confidence
         </span>
       </div>
 
       {/* 3 Metric Columns: Cars, Bikes, Buses (matches screenshot) */}
-      <div className="grid grid-cols-3 gap-2 pt-2">
+      <dl className="grid grid-cols-3 gap-2 pt-2" aria-label="AI detected vehicle counts">
         {/* Cars */}
         <div className="flex items-center gap-2 p-2 rounded-lg bg-[#0E1726] border border-border/60">
           <Car className="w-4 h-4 text-text-muted" />
           <div className="flex flex-col leading-none">
-            <span className="text-sm font-bold text-text-primary">{detection.cars}</span>
-            <span className="text-[10px] text-text-muted">Cars</span>
+            <dd className="text-sm font-bold text-text-primary">{detection.cars}</dd>
+            <dt className="text-[10px] text-text-muted">Cars</dt>
           </div>
         </div>
 
@@ -263,8 +276,8 @@ export const VehicleDetectionPanel: React.FC = () => {
         <div className="flex items-center gap-2 p-2 rounded-lg bg-[#0E1726] border border-border/60">
           <Bike className="w-4 h-4 text-text-muted" />
           <div className="flex flex-col leading-none">
-            <span className="text-sm font-bold text-text-primary">{detection.bikes}</span>
-            <span className="text-[10px] text-text-muted">Bikes</span>
+            <dd className="text-sm font-bold text-text-primary">{detection.bikes}</dd>
+            <dt className="text-[10px] text-text-muted">Bikes</dt>
           </div>
         </div>
 
@@ -272,11 +285,11 @@ export const VehicleDetectionPanel: React.FC = () => {
         <div className="flex items-center gap-2 p-2 rounded-lg bg-[#0E1726] border border-border/60">
           <Bus className="w-4 h-4 text-text-muted" />
           <div className="flex flex-col leading-none">
-            <span className="text-sm font-bold text-text-primary">{detection.buses}</span>
-            <span className="text-[10px] text-text-muted">Buses</span>
+            <dd className="text-sm font-bold text-text-primary">{detection.buses}</dd>
+            <dt className="text-[10px] text-text-muted">Buses</dt>
           </div>
         </div>
-      </div>
-    </div>
+      </dl>
+    </section>
   );
 };

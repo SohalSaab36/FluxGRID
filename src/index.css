@@ -3,10 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    min-height: 0;
+  }
+
   body {
     background-color: #080F1B;
     color: #E6EDF7;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid #31D7E8;
+    outline-offset: 2px;
   }
 
   /* Custom subtle scrollbar */
@@ -23,6 +36,22 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #31D7E8;
+  }
+}
+
+#main-content {
+  scrollbar-gutter: stable;
+  overflow-anchor: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
