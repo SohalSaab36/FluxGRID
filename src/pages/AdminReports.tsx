@@ -46,7 +46,7 @@ export const AdminReports: React.FC = () => {
 
   if (currentUser?.role !== 'admin') {
     return (
-      <div className="flex-1 p-5">
+      <div className="min-h-full p-5">
         <p role="alert" className="rounded-lg border border-danger/30 bg-danger-dark/40 p-4 text-sm text-danger">
           Admin access is required to review accident reports.
         </p>
@@ -55,7 +55,7 @@ export const AdminReports: React.FC = () => {
   }
 
   return (
-    <div className="flex-1 p-5">
+    <div className="min-h-full p-5">
       <section aria-labelledby="admin-reports-title" className="mx-auto max-w-4xl rounded-xl border border-border bg-bg-panel p-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>

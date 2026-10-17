@@ -41,12 +41,14 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="flex h-[100dvh] w-full overflow-hidden bg-bg-dark font-sans text-text-primary">
+    <div className="flex h-[100svh] w-full overflow-hidden bg-bg-dark font-sans text-text-primary">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col h-full overflow-hidden">
         <Header />
-        <main id="main-content" className="min-h-0 min-w-0 flex-1 flex flex-col overflow-y-auto overscroll-y-contain">
-          {renderCurrentView()}
+        <main id="main-content" className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-y-contain">
+          <div className="min-h-full">
+            {renderCurrentView()}
+          </div>
         </main>
       </div>
     </div>

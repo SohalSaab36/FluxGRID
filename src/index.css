@@ -41,7 +41,7 @@
 
 #main-content {
   scrollbar-gutter: stable;
-  overflow-anchor: none;
+  overflow-anchor: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
