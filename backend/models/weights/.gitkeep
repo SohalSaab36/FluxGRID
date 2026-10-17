@@ -1,0 +1,2 @@
+# Place a pretrained Ultralytics YOLO .pt file here (for example yolov8n.pt).
+# The backend will not download weights on startup or health checks.
