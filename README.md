@@ -141,6 +141,9 @@ The header shows **PYTHON API** when the Flask backend is connected and **LOCAL 
 Users can create accounts from **Sign in / Sign up** after verifying their mobile number by SMS. Configure Twilio Verify in the backend environment before signup; see [backend/README.md](./backend/README.md). FluxGRID does not collect Aadhaar information. Accident reports appear as pending until an administrator approves or rejects them. To bootstrap the first admin, set `CITYFLOW_ADMIN_EMAIL` and `CITYFLOW_ADMIN_PASSWORD` in the backend terminal before starting Flask; the password must contain at least 12 characters and is stored as a hash.
 Route planning also requires the backend and an internet connection to the configured OSRM service. OpenStreetMap routing provides geometry and typical journey times; CityFlow's congestion score is only a simulation/community-report estimate, not live traffic.
 
+### Public demo
+The frontend-only demo is hosted at [https://sohalsaab36.github.io/FluxGRID/](https://sohalsaab36.github.io/FluxGRID/). It uses the built-in browser simulation; account management, admin approvals, and community reports require a separately hosted Python backend. Updates pushed to `main` are deployed automatically through GitHub Actions.
+
 ### Backend (Windows)
 Full API documentation: [backend/README.md](backend/README.md)
 
