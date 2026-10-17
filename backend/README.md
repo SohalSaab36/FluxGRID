@@ -45,6 +45,8 @@ Set both admin variables before starting Flask to create the initial admin accou
 
 Users can create user-role accounts from the dashboard's **Sign in / Sign up** page with their full name, email, verified phone number, city, and a password of at least 12 characters. Signup sends an SMS one-time code through Twilio Verify and creates the account only after the code is approved. Enter phone numbers in international format (for example, `+919876543210`). Configure Twilio Verify below before enabling signup; credentials belong only in the backend environment and must never be committed. FluxGRID does not collect Aadhaar information. The **Forgot password?** flow emails a one-time code and requires SMTP configuration. Accident reports submitted by signed-in users are visible with a **Pending** label until an admin approves or rejects them. Other report types remain immediately available.
 
+To configure local mobile verification on Windows, run `Copy-Item .env.example .env` from the `backend` folder, fill in the Twilio account SID, auth token, and Verify service SID in `.env`, then restart Flask. The backend reads `backend\.env` without overriding environment variables already set by the operating system. Keep the populated `.env` file private; it is excluded from Git.
+
 Run the frontend in a **separate** terminal:
 
 ```bat
